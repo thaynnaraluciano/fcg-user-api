@@ -1,6 +1,7 @@
 ﻿using Api.Utils;
 using CrossCutting.Configuration;
 using CrossCutting.Exceptions.Middlewares;
+using Domain.Commands.v1.Login;
 using Domain.Commands.v1.Usuarios.AlterarStatusUsuario;
 using Domain.Commands.v1.Usuarios.AtualizarUsuario;
 using Domain.Commands.v1.Usuarios.BuscarUsuarioPorId;
@@ -55,6 +56,7 @@ builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof
 builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(BuscarUsuarioPorIdCommandHandler).Assembly));
 builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(AlterarStatusUsuarioCommandHandler).Assembly));
 builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(CriarSenhaCommandHandler).Assembly));
+builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(LoginCommandHandler).Assembly));
 
 #endregion
 
@@ -73,10 +75,12 @@ builder.Services.AddScoped<IValidator<BuscarUsuarioPorIdCommand>, BuscarUsuarioP
 builder.Services.AddScoped<IValidator<AlterarStatusUsuarioCommand>, AlterarStatusUsuarioCommandValidator>();
 builder.Services.AddScoped<IValidator<ListarUsuariosCommand>, ListarUsuariosCommandValidator>();
 builder.Services.AddScoped<IValidator<CriarSenhaCommand>, CriarSenhaCommandValidator>();
+builder.Services.AddScoped<IValidator<LoginCommand>, LoginCommandValidator>();
 #endregion
 
 #region Interfaces
 builder.Services.AddSingleton<ICriptografiaService, CriptografiaService>();
+builder.Services.AddSingleton<ITokenService, TokenService>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 #endregion
 
