@@ -1,0 +1,36 @@
+﻿namespace Infrastructure.Data.Models.Usuarios
+{
+    public class UsuarioModel
+    {
+        public Guid Id { get; private set; } = Guid.NewGuid();
+        public string Nome { get; private set; }
+        public string Email { get; private set; }
+        public int PerfilUsuario { get; set; }
+        public bool Ativo { get; set; } = true;
+        public string? SenhaHash { get; set; }
+        public DateTime? ConfirmadoEm { get; set; }
+        public string? SenhaSalt { get; set; }
+
+        public UsuarioModel() { }
+
+        public UsuarioModel(string nome, string email, int perfilUsuario)
+        {
+            Nome = nome;
+            Email = email;
+            PerfilUsuario = perfilUsuario;
+            Ativo = true;
+        }
+
+        public void Atualizar(string? nome, string? email, int? perfilUsuario)
+        {
+            if (!string.IsNullOrEmpty(nome))
+                Nome = nome;
+
+            if (!string.IsNullOrEmpty(email))
+                Email = email;
+
+            if (perfilUsuario.HasValue)
+                PerfilUsuario = perfilUsuario.Value;
+        }
+    }
+}
