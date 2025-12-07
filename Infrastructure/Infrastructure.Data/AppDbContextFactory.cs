@@ -10,8 +10,8 @@ namespace Infrastructure.Data
             var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
             optionsBuilder.UseMySql
             (
-                "Server=;Database=dbFiapUser;User=;Password=;",
-                new MySqlServerVersion(new Version(8, 0, 42))
+                "Server=localhost;Port=3306;Database=Bd_Users;User=root;Password=1234",
+                new MySqlServerVersion(new Version(8, 0, 43))
             );
             return new AppDbContext(optionsBuilder.Options);
         }

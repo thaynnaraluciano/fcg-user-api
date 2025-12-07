@@ -1,4 +1,5 @@
-﻿using Api.Utils;
+﻿using Api.Services;
+using Api.Utils;
 using CrossCutting.Configuration;
 using CrossCutting.Exceptions.Middlewares;
 using Domain.Commands.v1.Login;
@@ -88,32 +89,43 @@ builder.Services.Configure<AppSettings>(builder.Configuration);
 
 builder.Configuration.AddEnvironmentVariables();
 
-try
-{
-    Env.Load();
-}
-catch
-{
-    //Caso do deploy.
-    Console.WriteLine(".env não encontrado, usando apenas variáveis de ambiente...");
-}
+#if DEBUG
+//Chama o gerenciador do docker ANTES da aplicação iniciar
+string connString = builder.Configuration.GetConnectionString(name: "DefaultConnection")??"";
+await DockerMySqlManager.EnsureMySqlContainerRunningAsync(connString);
+#else
+    try
+    {
+        Env.Load();
+    }
+    catch
+    {
+        //Caso do deploy.
+        Console.WriteLine(".env não encontrado, usando apenas variáveis de ambiente...");
+    }
 
-// Le variáveis de ambiente (do SO, .env ou secrets)
-string host = Environment.GetEnvironmentVariable("DB_HOST") ?? "localhost";
-string db = Environment.GetEnvironmentVariable("DB_NAME") ?? "testdb";
-string user = Environment.GetEnvironmentVariable("DB_USER") ?? "root";
-string pass = Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "";
+    // Le variáveis de ambiente (do SO, .env ou secrets)
+    string host = Environment.GetEnvironmentVariable("DB_HOST") ?? "localhost";
+    string db = Environment.GetEnvironmentVariable("DB_NAME") ?? "testdb";
+    string user = Environment.GetEnvironmentVariable("DB_USER") ?? "root";
+    string pass = Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "";
 
-string connString = $"Server={host};Database={db};User={user};Password={pass};";
+    string connString = $"Server={host};Database={db};User={user};Password={pass};";
 
+#endif
 builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql
 (
     connString,
-    new MySqlServerVersion(new Version(8, 0, 42))
+    new MySqlServerVersion(new Version(8, 0, 43))
 ));
-
 var app = builder.Build();
+#if DEBUG
+//Aguardando docker subir.
+await Infrastructure.Data.MigrationHelper.WaitForMySqlAsync(connString);
+//Aplica migrations se não estiver atualizado
+Infrastructure.Data.MigrationHelper.ApplyMigrations(app);
 
+#endif
 app.UseSwagger();
 app.UseSwaggerUI();
 
