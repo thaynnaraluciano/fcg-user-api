@@ -21,3 +21,4 @@
 /Tests/Validators.Tests/bin/Debug/net8.0
 /Tests/Validators.Tests/obj
 /Api/.env
+/Tests/Validators.Tests/bin/Release/net8.0/CoverletSourceRootsMapping_Validators.Tests
