@@ -1,24 +1,124 @@
-﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
+## Visual Studio / .NET Build Artifacts
+bin/
+obj/
+[Bb]uild/
+[Ll]og/
+TestResults/
+*.user
+*.rsuser
+*.suo
+*.cache
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+*.vsp
+*.vspscc
+*.vssscc
+*.ncb
+*.aps
+*.ilk
+*.tmp
+*.log
+*.vspscc
+*.tlog
+*.lastcodeanalysissucceeded
+*.tscache
+*.vsix
+*.psess
+*.vspx
+*.pidb
+*.svclog
+*.xsd.cache
 
-/.vs
-/Api/bin/Debug/net8.0
-/Api/obj/Debug/net8.0
-/Api/obj
-/CrossCutting/CrossCutting.Configuration/bin/Debug/net8.0
-/CrossCutting/CrossCutting.Configuration/obj
-/CrossCutting/CrossCutting.Exceptions/bin/Debug/net8.0
-/CrossCutting/CrossCutting.Exceptions/obj
-/Domain/bin/Debug/net8.0
-/Domain/obj
-/Infrastructure/Infrastructure.Data/bin/Debug/net8.0
-/Infrastructure/Infrastructure.Data/obj
-/Infrastructure/Infrastructure.Services/bin/Debug/net8.0
-/Infrastructure/Infrastructure.Services/obj
-/Tests/CommonTestUtilities/bin/Debug/net8.0
-/Tests/CommonTestUtilities/obj
-/Tests/Validators.Tests/bin/Debug/net8.0
-/Tests/Validators.Tests/obj
-/Api/.env
-/Tests/Validators.Tests/bin/Release/net8.0/CoverletSourceRootsMapping_Validators.Tests
+## Visual Studio Code
+.vscode/
+.history/
+.idea/
+*.code-workspace
+
+## Rider
+.idea/
+*.sln.iml
+
+## ASP.NET / Web
+node_modules/
+bower_components/
+wwwroot/lib/
+wwwroot/dist/
+dist/
+*.bundle.js
+*.map
+*.min.js
+*.min.css
+
+## NuGet
+*.nupkg
+*.snupkg
+*.nuspec
+packages/
+.nuget/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+## User-specific files
+*.userprefs
+*.userosscache
+*.user
+*.rsuser
+*.swp
+*.orig
+
+## Entity Framework / Migrations
+Migrations/obj/
+Migrations/bin/
+*_MigrationHistory.sql
+
+## Azure / Cloud
+PublishProfiles/
+*.pubxml
+*.azurePubxml
+*.azurePubxml.user
+*.PublishSettings
+App_Data/
+Generated\ Files/
+
+## Logs and Diagnostics
+*.log
+logs/
+*.svclog
+*.trace
+*.coverage
+*.coveragexml
+
+## JetBrains Rider
+.idea/
+*.sln.iml
+
+## Test Results
+TestResults/
+*.trx
+*.testlog
+*.vsmdi
+*.coverage
+*.coveragexml
+*.testsettings
+*.runsettings
+
+## Docker / Container
+docker-compose.override.yml
+.env
+.dockerignore
+
+## OS / Misc
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+## Tooling
+.vs/
+.vscode/
+.vsconfig
+*.dbmd*
