@@ -1,7 +1,9 @@
-﻿using Api.Services;
+﻿using Api.Extensions;
+using Api.Services;
 using Api.Utils;
 using CrossCutting.Configuration;
 using CrossCutting.Exceptions.Middlewares;
+using CrossCutting.Monitoring;
 using Domain.Commands.v1.Login;
 using Domain.Commands.v1.Usuarios.AlterarStatusUsuario;
 using Domain.Commands.v1.Usuarios.AtualizarUsuario;
@@ -21,6 +23,8 @@ using Infrastructure.Services.Services.v1;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Prometheus;
+using Prometheus.DotNetRuntime;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -86,6 +90,7 @@ builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 #endregion
 
 builder.Services.Configure<AppSettings>(builder.Configuration);
+builder.Services.AddSingleton<IMetricsService, MetricsService>();
 
 builder.Configuration.AddEnvironmentVariables();
 
@@ -137,7 +142,12 @@ app.UseReDoc(c =>
 
 app.UseHttpsRedirection();
 
+DotNetRuntimeStatsBuilder.Default().StartCollecting();
+
 app.UseRouting();
+
+app.UseRequestMetrics();
+app.MapMetrics();
 
 app.UseAuthentication();
 app.UseAuthorization();
