@@ -42,9 +42,7 @@ builder.Services.AddSwaggerGen(c =>
 
             - Funcionalidades principais: gerenciamento de jogos, usuários, promoções e envio de notificações por e-mail.
 
-            - Usuários: cadastro, criação inicial de senha, gerenciamento de status e dados dos usuários.
-
-            -Segurança: a API utiliza autenticação JWT e políticas de autorização para garantir acesso adequado às funcionalidades."
+            - Usuários: cadastro, criação inicial de senha, gerenciamento de status e dados dos usuários."
     });
 });
 
@@ -131,7 +129,19 @@ await Infrastructure.Data.MigrationHelper.WaitForMySqlAsync(connString);
 Infrastructure.Data.MigrationHelper.ApplyMigrations(app);
 
 #endif
-app.UseSwagger();
+
+// Para rodar com API Gateway na AWS, usar caminho base /payment
+app.UseSwagger(c =>
+{
+    c.PreSerializeFilters.Add((swaggerDoc, httpReq) =>
+    {
+        swaggerDoc.Servers = new List<OpenApiServer>
+        {
+            new() { Url = "/user" }
+        };
+    });
+});
+
 app.UseSwaggerUI();
 
 app.UseReDoc(c =>
