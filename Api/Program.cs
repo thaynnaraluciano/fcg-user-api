@@ -13,13 +13,15 @@ using Domain.Commands.v1.Usuarios.CriarUsuario;
 using Domain.Commands.v1.Usuarios.ListarUsuarios;
 using Domain.Commands.v1.Usuarios.RemoverUsuario;
 using Domain.MapperProfiles;
-using DotNetEnv;
 using FluentValidation;
 using Infrastructure.Data;
 using Infrastructure.Data.Interfaces.Usuarios;
 using Infrastructure.Data.Repositories.Usuarios;
+using Infrastructure.Messaging.Configuration;
+using Infrastructure.Messaging.Consumers;
 using Infrastructure.Services.Interfaces.v1;
 using Infrastructure.Services.Services.v1;
+using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -47,6 +49,19 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
+#region RABBIT MQ
+builder.Services.AddMassTransit(x =>
+{
+    x.AddConsumer<GameAvailableConsumer>();
+
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        MassTransitConfiguration.Configure(context, cfg);
+    });
+});
+
+#endregion
 
 #region MediatR
 // Login

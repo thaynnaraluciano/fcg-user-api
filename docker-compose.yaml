@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: fiap-api
+    container_name: fiap-user-api
     ports:
       - "8080:8080"
     depends_on:
