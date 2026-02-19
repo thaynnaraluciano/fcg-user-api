@@ -10,6 +10,8 @@ namespace Infrastructure.Messaging.Configuration
         {
             var rabbitUrl = Environment.GetEnvironmentVariable("RABBITMQ_URL") ?? "rabbitmq://127.0.0.1/";
 
+            cfg.Host(new Uri(rabbitUrl));
+
             cfg.UseMessageRetry(r =>
             {
                 r.Interval(3, TimeSpan.FromSeconds(5));

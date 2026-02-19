@@ -7,12 +7,15 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine AS base
 WORKDIR /app
 
 # Porta única para simplificar em cloud
-ENV ASPNETCORE_URLS=http://0.0.0.0:8080
+ENV ASPNETCORE_URLS=http://+:8080
 EXPOSE 8080
 
 # Globalization (necessário para pt-BR funcionar corretamente)
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 RUN apk add --no-cache icu-libs
+
+# Segurança: usuário sem privilégios
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 
 #############################
 #  Build
@@ -46,4 +49,9 @@ FROM base AS final
 WORKDIR /app
 COPY --from=build /app/publish .
 
+# Healthcheck (assumindo endpoint /health)
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
+  CMD wget -qO- http://localhost:8080/health || exit 1
+
+USER appuser
 ENTRYPOINT ["dotnet", "Api.dll"]
