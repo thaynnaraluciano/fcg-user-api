@@ -13,6 +13,7 @@ using Domain.Commands.v1.Usuarios.CriarUsuario;
 using Domain.Commands.v1.Usuarios.ListarUsuarios;
 using Domain.Commands.v1.Usuarios.RemoverUsuario;
 using Domain.MapperProfiles;
+using DotNetEnv;
 using FluentValidation;
 using Infrastructure.Data;
 using Infrastructure.Data.Interfaces.Usuarios;
